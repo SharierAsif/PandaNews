@@ -18,7 +18,7 @@ function News() {
       setNewsdata(data);
     };
     fetchNews();
-  }, []); 
+  }, [page]); 
   
   let handlePrevPage = () => {
     console.log("prev page")
@@ -31,20 +31,34 @@ function News() {
   return (
     <div>
       <div className="grid grid-cols-4 gap-2 lg:grid-cols-5 lg:gap-2">
-      {newsdata.map((news) => (
-        <NewsItem
-          content={news.content}
-          url={news.url}
-          urlToImage={news.urlToImage}
-          title={news.title}
-          description={news.description}
-          icon={news.icon}
-        ></NewsItem>
-      ))}
+        {newsdata.map((news) => (
+          <NewsItem
+            content={news.content}
+            url={news.url}
+            urlToImage={
+              news.urlToImage === null
+                ? "https://media.istockphoto.com/id/1357365823/vector/default-image-icon-vector-missing-picture-page-for-website-design-or-mobile-app-no-photo.jpg?s=612x612&w=0&k=20&c=PM_optEhHBTZkuJQLlCjLz-v3zzxp-1mpNQZsdjrbns="
+                : news.urlToImage
+            }
+            title={news.title}
+            description={news.description}
+            icon={news.icon}
+          ></NewsItem>
+        ))}
       </div>
       <div className="flex justify-between mx-8 my-8">
-        <button onClick={handlePrevPage} className="inline-flex text-white bg-zinc-900 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-600 rounded text-lg">&laquo;</button>
-        <button onClick={handleNextPage} className ="inline-flex text-white bg-zinc-900 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-600 rounded text-lg">&raquo;</button>
+        <button
+          onClick={handlePrevPage}
+          className="inline-flex text-white bg-zinc-900 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-600 rounded text-lg"
+        >
+          &laquo;
+        </button>
+        <button
+          onClick={handleNextPage}
+          className="inline-flex text-white bg-zinc-900 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-600 rounded text-lg"
+        >
+          &raquo;
+        </button>
       </div>
     </div>
   );
