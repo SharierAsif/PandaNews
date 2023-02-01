@@ -18,7 +18,7 @@ function News() {
       setNewsdata(data);
     };
     fetchNews();
-  }, [page]); 
+  }, []); 
   
   let handlePrevPage = () => {
     console.log("prev page")

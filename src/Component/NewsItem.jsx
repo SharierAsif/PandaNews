@@ -17,7 +17,7 @@ function NewsItem({ title, description, urlToImage, content, url }) {
     //   {/* discriptionj */}
     //   <p className="flex-wrap mb-8">{description}</p>
     // </div>
-    <div className=" border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+    <div className=" border-4 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
         <img className="lg:h-48 md:h-36 w-full object-cover object-center" src={urlToImage} alt="blog"/>
         <div className="p-6">
           <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
