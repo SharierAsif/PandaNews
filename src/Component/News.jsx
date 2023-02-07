@@ -2,36 +2,45 @@ import React from "react";
 import NewsItem from "./NewsItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
+import Spinner from "./Spinner";
+
 
 function News() {
   const [newsdata, setNewsdata] = useState([]);
   var [page, setPage] = useState(1);
-  
+  var [totalResult, setTotalResult] = useState();
+  var [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     const fetchNews = async () => {
-      let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=fd8dd2a03bcb49ae8cb12671ddd5e7e1&page=${page}`;
+      let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=fd8dd2a03bcb49ae8cb12671ddd5e7e1&page=${page}`;
       let res = await axios.get(url);
       let data = res.data.articles;
+      let totalResult = res.data.totalResults;
+      setTotalResult(totalResult);
+      setIsLoading(false)
       console.log(res);
       console.log(data);
+
       setNewsdata(data);
     };
     fetchNews();
-  }, [page]); 
-  
+  }, [page]);
+
   let handlePrevPage = () => {
-    console.log("prev page")
-    setPage( page - 1)
-  }
+    console.log("prev page");
+    setPage(page - 1);
+  };
   let handleNextPage = () => {
-    console.log("next page")
-    setPage( page + 1)
-  }
+    console.log("next page");
+    setPage(page + 1);
+  };
   return (
-    <div>
+    <div className="container mx-auto flex flex-wrap p-3 flex-col md:flex-row items-center">
+      {isLoading && <Spinner/>}
       <div className="grid grid-cols-4 gap-2 lg:grid-cols-5 lg:gap-2">
-        {newsdata.map((news) => (
+        {isLoading || newsdata.map((news) => (
           <NewsItem
             content={news.content}
             url={news.url}
@@ -46,19 +55,30 @@ function News() {
           ></NewsItem>
         ))}
       </div>
-      <div className="flex justify-between mx-8 my-8">
+      <div className="flex flex-row justify-between mx-8 my-8 fixed-bottom">
+        <div className="flex items-center flex-wrap">
         <button
+           disabled={1===page}
           onClick={handlePrevPage}
-          className="inline-flex text-white bg-zinc-900 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-600 rounded text-lg"
-        >
-          &laquo;
+          className="text-gray-900 rounded-full hover:text-white hover:bg-zinc-700 transition"
+          >
+            <BsFillArrowLeftCircleFill
+              className="h-10 w-10"
+            />
         </button>
-        <button
-          onClick={handleNextPage}
-          className="inline-flex text-white bg-zinc-900 border-0 py-2 px-6 focus:outline-none hover:bg-zinc-600 rounded text-lg"
-        >
-          &raquo;
-        </button>
+        </div>
+        <div className="flex items-center flex-wrap">
+          <button
+            disabled={Math.ceil(totalResult / 20)===page}
+            onClick={handleNextPage}
+            className="text-gray-900 rounded-full hover:text-white hover:bg-zinc-700 transition"
+          >
+            <BsFillArrowRightCircleFill
+              className="h-10 w-10"
+            />
+            </button>
+            
+        </div>
       </div>
     </div>
   );
